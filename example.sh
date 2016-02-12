@@ -1,5 +1,6 @@
 #!/usr/bin/env pageboy
-echo $cmd
+
+./example.sh -r php | grep 4
 
 #!/usr/bin/env php
 <?php
@@ -12,6 +13,9 @@ echo "600\n";
 echo "700\n";
 echo "800\n";
 echo "900\n";
+
+#!/bin/bash
+env
 
 #!/bin/bash
 echo $fn
