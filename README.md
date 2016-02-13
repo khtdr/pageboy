@@ -1,8 +1,27 @@
-<span style="background-color:#FF6BCD">pageboy</span>
-
-hi
 
 <img align="right" src="https://raw.githubusercontent.com/khtdr/pageboy/master/logo.png" width="200" />
+
+pageboy
+=======
+
+Write your shell scripts in any combination of languages you want. 
+
+```bash
+#!/usr/bin/env pageboy
+
+# TODO: prompt use for information
+#       send data to ruby script for processing
+#       pipe the results into the perl script for formatting
+
+#!/usr/bin/env ruby
+# ...
+
+#!/usr/bin/perl
+# ...
+
+```
+
+You can mix and match all you want. If it uses a valid [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)), it will work. If it doesn't, it's a bug so [please let me know](https://github.com/khtdr/pageboy/issues).
 
 installation & quickstart
 -------------------------
