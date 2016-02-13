@@ -1,6 +1,6 @@
 #!/bin/bash
 function usage {
-  echo "pageboy-v1.1.0"
+  echo "pageboy-v1.1.1"
   echo "    $script            # runs as pageboy script"
   echo "    $script -r <page>  # runs requested page"
   echo "    $script -p <page>  # prints requested page"
@@ -11,7 +11,7 @@ function usage {
 }
 read -a ARGV <<< "$@"
 while (("$OPTIND" <= "$#")); do
-  while getopts "dr:cp:h" opt; do
+  while getopts "dr:p:h" opt; do
     case "$opt" in
       r) fn=run; page="$OPTARG" ;;
       p) fn=print; page="$OPTARG" ;;
