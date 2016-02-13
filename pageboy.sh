@@ -4,7 +4,7 @@ function usage {
   echo "    $script            # runs as pageboy script"
   echo "    $script -r <page>  # runs requested page"
   echo "    $script -p <page>  # prints requested page"
-  echo "    $script -c STDOUT  # compiles to bash"
+  #echo "    $script -c STDOUT  # compiles to bash"
   echo "    $script -d         # dumps page table"
   echo "    $script -h         # shows this message"
   echo "https://github.com/khtdr/pageboy"
@@ -14,9 +14,10 @@ read -a ARGV <<< "$@"
 while (("$OPTIND" <= "$#")); do
   while getopts "dr:cp:h" opt; do
     case "$opt" in
-      d) fn=dump; ;;
       r) fn=run; page="$OPTARG" ;;
       p) fn=print; page="$OPTARG" ;;
+      #c) fn=compile ;;
+      d) fn=dump; ;;
       *) fn=usage ;;
     esac
   done
@@ -34,9 +35,10 @@ fn=${fn:-run}; page=${page:-pageboy}
   program=$(awk "$range"  "$script");
 }
 case "$fn" in
-  "dump") echo "$table" ;;
   "run") echo "$program" | $shebang; ;;
   "print") echo "$program" ;;
+  #"compile") echo "not implemented yet" ;;
+  "dump") echo "$table" ;;
   *) usage ;;
 esac
 exit 0
