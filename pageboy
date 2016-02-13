@@ -12,7 +12,7 @@ function usage {
 }
 read -a ARGV <<< "$@"
 while (("$OPTIND" <= "$#")); do
-  while getopts "dr:p:h" opt; do
+  while getopts "dr:p:ch" opt; do
     case "$opt" in
       r) fn=run; page="$OPTARG" ;;
       p) fn=print; page="$OPTARG" ;;
