@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 cd ${0%'run-tests.sh'}
-ln -s pageboy "pageboy-test"
+ln -sf pageboy "pageboy-test"
+./pageboy-test -h
 export PATH=$PATH:$(pwd)
 for t in ./tests/*; do
   echo -n "$t ... "
