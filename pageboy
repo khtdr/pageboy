@@ -1,9 +1,10 @@
 #!/bin/bash
 function usage {
-  echo "pageboy-v1.1.1"
+  echo "pageboy-v1.1.2"
   echo "    $script            # runs as pageboy script"
   echo "    $script -r <page>  # runs requested page"
   echo "    $script -p <page>  # prints requested page"
+  echo "    $script -c         # compiles to bash script"
   echo "    $script -d         # dumps page table"
   echo "    $script -h         # shows this message"
   echo "https://github.com/khtdr/pageboy"
@@ -15,6 +16,7 @@ while (("$OPTIND" <= "$#")); do
     case "$opt" in
       r) fn=run; page="$OPTARG" ;;
       p) fn=print; page="$OPTARG" ;;
+      c) fn=usage; echo "NOT IMPLEMENTED YET" ;;
       d) fn=dump; ;;
       *) fn=usage ;;
     esac
@@ -23,7 +25,10 @@ while (("$OPTIND" <= "$#")); do
   OPTIND=$(($OPTIND+1))
 done
 fn=${fn:-run}; page=${page:-pageboy}
-[[ -f "$script" ]] || { echo "no readable file name supplied"; usage; }
+[[ "$fn" != "usage" ]] || { usage; }
+[[ -f "$script" ]] || {
+  echo "no readable file name supplied"; usage;
+}
 table="$(awk "$(sed -n -e '/^#!\/awk/,$p' $0)" $script)"
 read -r -a spec <<< $(echo "$table" | grep ^$page | head -1);
 name=${spec[0]}; spec[0]="";
@@ -36,7 +41,6 @@ case "$fn" in
   "run") cd ${script%/*}; echo "$program" | \
            PAGEBOY="./${script##*/}" PAGE="$PAGEBOY -r" $shebang;
          cd - $>/dev/null ;;
-  *) usage ;;
 esac
 exit 0
 #!/awk script for printing the page table
