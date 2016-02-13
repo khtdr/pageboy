@@ -1,3 +1,4 @@
 pageboy
 =======
-![pageboy logo](https://raw.githubusercontent.com/khtdr/pageboy/master/logo.png)
+
+![](https://raw.githubusercontent.com/khtdr/pageboy/master/logo.png =200x)
