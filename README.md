@@ -1,7 +1,11 @@
 
 
 <img align="right" src="https://raw.githubusercontent.com/khtdr/pageboy/master/logo.png" width="200" />
-treat your [shebangs](https://en.wikipedia.org/wiki/Shebang_(Unix)) right
+
+
+1. [download](/) and put into your `$PATH`, somewhere like `/home/$USER/bin/pageboy`
+2. [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) away with `#!/usr/bin/env pageboy`
+
 
 :bulb: check for help information
 
