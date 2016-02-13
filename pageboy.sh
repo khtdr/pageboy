@@ -1,16 +1,18 @@
 #!/bin/bash
 function usage {
-  echo "pageboy shebang examples:"
-  echo -e "$script\t\t# runs first page"
-  echo -e "$script -r <page>\t# runs page listing"
-  echo -e "$script -p <page>\t# prints page listing"
-  echo -e "$script -h\t\t# shows help information"
-  echo -e "$script -d\t\t# dumps page table"
+  echo "pageboy-1.0.0"
+  echo "    $script            # runs as pageboy script"
+  echo "    $script -r <page>  # runs requested page"
+  echo "    $script -p <page>  # prints requested page"
+  echo "    $script -c STDOUT  # compiles to bash"
+  echo "    $script -d         # dumps page table"
+  echo "    $script -h         # shows this message"
+  echo "https://github.com/khtdr/pageboy"
   exit 0
 }
 read -a ARGV <<< "$@"
 while (("$OPTIND" <= "$#")); do
-  while getopts "dr:p:h" opt; do
+  while getopts "dr:cp:h" opt; do
     case "$opt" in
       d) fn=dump; ;;
       r) fn=run; page="$OPTARG" ;;
