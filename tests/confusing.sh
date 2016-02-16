@@ -1,6 +1,6 @@
 #!/usr/bin/env pageboy-test
 
-echo $(echo "$(./lots.sh -r php | sed 's/$/+/')0" | tr -d "\n\r") | bc
+echo $(echo "$($PAGE php | sed 's/$/+/')0" | tr -d "\n\r") | bc
 
 #!/usr/bin/env php
 <?php

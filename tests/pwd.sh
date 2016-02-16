@@ -1,3 +1,4 @@
 #!/usr/bin/env pageboy-test
 echo ${PWD##*/}
-# tests
+# when run from the runner script:
+# pageboy

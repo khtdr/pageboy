@@ -1,5 +1,5 @@
 #!/usr/bin/env pageboy-test
-./print-php.sh -p php | grep -A1 4 | tail -1
+$PAGEBOY -p php | grep -A1 4 | tail -1
 
 #!/usr/bin/env php
 <?php
