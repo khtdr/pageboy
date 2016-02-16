@@ -1,11 +1,11 @@
 #!/bin/bash
 
 function usage {
-  echo "pageboy-v1.1.2"
+  echo "pageboy-v1.1.3"
   echo "    $self            # runs as pageboy script"
   echo "    $self -r <page>  # runs requested page"
   echo "    $self -p <page>  # prints requested page"
-  echo "    $self -c         # will compile to bash in next version"
+  echo "    $self -c         # compiles to bash script"
   echo "    $self -d         # dumps page table"
   echo "    $self -h         # shows this message"
   echo "https://github.com/khtdr/pageboy"
@@ -59,8 +59,10 @@ range=${spec[1]}; spec[1]="";
 shebang="${spec[@]}";
 program=$(awk $range  $self);
 case "$fn" in
-  "print") echo "$program" ;;
-  "dump") echo "$table" ;;
-  "run") echo "$program" | PAGEBOY="$self" PAGE="$PAGEBOY -r" $shebang ;;
+  "print") echo "$program"; exit 0 ;;
+  "dump") echo "$table"; exit 0 ;;
+  "run") echo "$program" | PAGEBOY="$self" PAGE="$PAGEBOY -r" $shebang; exit $? ;;
 esac
-exit 0
+
+
+cat <(grep -v compile $0) $1

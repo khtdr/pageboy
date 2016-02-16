@@ -3,7 +3,7 @@ cd ${0%'run-tests.sh'}
 ln -sf pageboy "pageboy-test"
 ./pageboy-test -h
 export PATH=$PATH:$(pwd)
-for t in ./tests/*; do
+for t in ./tests/*.sh; do
   echo -n "$t ... "
   read -r expected <<< "$(tail -1 $t | sed 's/^#//')"
   read -r actual <<< "$($t)"
