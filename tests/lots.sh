@@ -1,6 +1,6 @@
 #!/usr/bin/env pageboy-test
 
-./lots.sh -d | wc -lw
+$PAGEBOY -d | wc -lw
 
 #!/usr/bin/env php
 <?php

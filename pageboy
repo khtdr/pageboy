@@ -1,49 +1,39 @@
 #!/bin/bash
+
 function usage {
   echo "pageboy-v1.1.2"
-  echo "    $script            # runs as pageboy script"
-  echo "    $script -r <page>  # runs requested page"
-  echo "    $script -p <page>  # prints requested page"
-  echo "    $script -c         # compiles to bash script"
-  echo "    $script -d         # dumps page table"
-  echo "    $script -h         # shows this message"
+  echo "    $self            # runs as pageboy script"
+  echo "    $self -r <page>  # runs requested page"
+  echo "    $self -p <page>  # prints requested page"
+  echo "    $self -c         # will compile to bash in next version"
+  echo "    $self -d         # dumps page table"
+  echo "    $self -h         # shows this message"
   echo "https://github.com/khtdr/pageboy"
   exit 0
 }
+
 read -a ARGV <<< "$@"
 while (("$OPTIND" <= "$#")); do
   while getopts "dr:p:ch" opt; do
     case "$opt" in
       r) fn=run; page="$OPTARG" ;;
       p) fn=print; page="$OPTARG" ;;
-      c) fn=usage; echo "NOT IMPLEMENTED YET" ;;
+      c) fn=compile ;;
       d) fn=dump; ;;
       *) fn=usage ;;
     esac
   done
-  script=${script:-${ARGV[($OPTIND-1)]}}
+  self=${self:-${ARGV[($OPTIND-1)]}}
   OPTIND=$(($OPTIND+1))
 done
+
 fn=${fn:-run}; page=${page:-pageboy}
 [[ "$fn" != "usage" ]] || { usage; }
-[[ -f "$script" ]] || {
+[[ -f "$self" ]] || {
   echo "no readable file name supplied"; usage;
 }
-table="$(awk "$(sed -n -e '/^#!\/awk/,$p' $0)" $script)"
-read -r -a spec <<< $(echo "$table" | grep ^$page | head -1);
-name=${spec[0]}; spec[0]="";
-range=${spec[1]}; spec[1]="";
-shebang="${spec[@]}";
-program=$(awk "$range"  "$script");
-case "$fn" in
-  "print") echo "$program" ;;
-  "dump") echo "$table" ;;
-  "run") cd ${script%/*}; echo "$program" | \
-           PAGEBOY="./${script##*/}" PAGE="$PAGEBOY -r" $shebang;
-         cd - $>/dev/null ;;
-esac
-exit 0
-#!/awk script for printing the page table
+
+read -r -d '' awkScript <<'EOF'
 function record (end) {
   shebang=name
   if (shebang ~ /pageboy/) { shebang="/usr/bin/env bash"; }
@@ -60,3 +50,17 @@ END { record(NR); }
   if (start != 0) { record(NR-1); }
   name=substr($0, 3); start=NR;
 }
+EOF
+
+table="$(awk "$awkScript" $self)"
+read -r -a spec <<< $(echo "$table" | grep ^$page | head -1);
+name=${spec[0]}; spec[0]="";
+range=${spec[1]}; spec[1]="";
+shebang="${spec[@]}";
+program=$(awk $range  $self);
+case "$fn" in
+  "print") echo "$program" ;;
+  "dump") echo "$table" ;;
+  "run") echo "$program" | PAGEBOY="$self" PAGE="$PAGEBOY -r" $shebang ;;
+esac
+exit 0
