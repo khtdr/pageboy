@@ -26,7 +26,7 @@
 
 
 function usage {
-  echo "pageboy-v1.1.3"
+  echo "pageboy-v1.2.1"
   echo "    $target            # runs as pageboy script"
   echo "    $target -r <page>  # runs requested page"
   echo "    $target -p <page>  # prints requested page"
