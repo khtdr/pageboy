@@ -6,13 +6,19 @@ export PATH=$PATH:$(pwd)
 for t in ./scripts/test-*.sh; do
   echo -n "$t ... "
   read -r expected <<< "$(tail -1 $t | sed 's/^#//')"
-  echo "$($t -c)" > $t.compiled
-  chmod +x $t.compiled
   read -r actual <<< "$($t)"
-  read -r compiled <<< "$($t.compiled)"
-  rm $t.compiled
   if [[ "$expected" == "$actual" ]]; then
-    echo "passed"
+    echo "$($t -c)" > $t.compiled
+    chmod +x $t.compiled
+    read -r compiled <<< "$($t.compiled)"
+    rm $t.compiled
+    if [[ "$actual" == "$compiled" ]]; then
+      echo "passed"
+    else
+    echo "compiled output does not match!"
+    echo "  -pageboy [$actual]"
+    echo "  -compiled[$compiled]"
+    fi
   else
     echo "failed!"
     echo "  -expects [$expected]"
