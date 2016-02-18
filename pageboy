@@ -26,7 +26,7 @@
 
 
 function usage {
-  echo "pageboy-v1.2.1"
+  echo "pageboy-v1.2.2"
   echo "    $target            # runs as pageboy script"
   echo "    $target -r <page>  # runs requested page"
   echo "    $target -p <page>  # prints requested page"
@@ -36,7 +36,7 @@ function usage {
   echo "https://github.com/khtdr/pageboy"
   exit 0
 }
-read -a ARGV <<< "$@"
+read -r -a ARGV <<< "$@"
 while (("$OPTIND" <= "$#")); do
   while getopts "dr:p:ch" opt; do
     case "$opt" in
@@ -52,6 +52,7 @@ while (("$OPTIND" <= "$#")); do
 done
 target=${target:-$0}
 fn=${fn:-run}; page=${page:-pageboy}
+if [[ $# = 0 ]] && [[ $0 =~ pageboy(-test)?$ ]]; then fn=usage; fi
 [[ "$fn" != "usage" ]] || { usage; }
 [[ -f "$target" ]] || {
   echo "no readable file name supplied"; usage;
@@ -87,5 +88,5 @@ case "$fn" in
   "dump") echo "$table"; exit 0 ;;
   "run") echo "$program" | PAGEBOY="$target" PAGE="$PAGEBOY -r" $shebang; exit $? ;;
 esac
-cat <(grep -v compile $0) $1
+cat <(grep -v compile "$0") "$1"
 exit 0
