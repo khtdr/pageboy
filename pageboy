@@ -26,7 +26,7 @@
 
 
 function usage {
-  echo "pageboy-v1.2.2"
+  echo "pageboy-v1.2.3"
   echo "    $target            # runs as pageboy script"
   echo "    $target -r <page>  # runs requested page"
   echo "    $target -p <page>  # prints requested page"
@@ -86,7 +86,10 @@ program=$(awk $range  $target);
 case "$fn" in
   "print") echo "$program"; exit 0 ;;
   "dump") echo "$table"; exit 0 ;;
-  "run") echo "$program" | PAGEBOY="$target" PAGE="$PAGEBOY -r" $shebang; exit $? ;;
+  "run")
+    if [[ $shebang =~ "env awk" ]]; then awk "$program"; exit $?; fi
+    echo "$program" | PAGEBOY="$target" PAGE="$PAGEBOY -r" $shebang; exit $?
+    ;;
 esac
 cat <(grep -v compile "$0") "$1"
 exit 0

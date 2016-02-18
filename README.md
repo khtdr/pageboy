@@ -18,12 +18,12 @@ Write your shell scripts in any combination of languages you want.
 
 ```
 
-You can mix and match all you want. If your script uses valid [shebangs](https://en.wikipedia.org/wiki/Shebang_(Unix)), it will work. If it doesn't, it's a bug and [please let me know](https://github.com/khtdr/pageboy/issues).
+You can mix and match all you want. If your script uses valid [shebangs](https://en.wikipedia.org/wiki/Shebang_(Unix)), it will work. If it doesn't, it's a bug and [please let me know](https://github.com/khtdr/pageboy/issues). It also supports the (not quite right) awk shebang: `#!/usr/bin/env awk`.
 
 installation & quickstart
 -------------------------
 
-1. Download the [pageboy bash script](https://raw.githubusercontent.com/khtdr/pageboy/v1.2.2/pageboy) and put into your `$PATH` (ie. `~/bin/`).
+1. Download the [pageboy bash script](https://raw.githubusercontent.com/khtdr/pageboy/v1.2.3/pageboy) and put into your `$PATH` (ie. `~/bin/`).
 2. Start using `#!/usr/bin/env pageboy` as your shebang line in your bash scripts.
 2. Call other "pages" of your script by using the pre-defined `$PAGE` command in your scripts.
 
@@ -117,7 +117,7 @@ feature guide
 pageboy -h
 ```
 >```
-pageboy-v1.2.2
+pageboy-v1.2.3
     pageboy            # runs as pageboy script
     pageboy -r <page>  # runs requested page
     pageboy -p <page>  # prints requested page
