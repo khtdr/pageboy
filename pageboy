@@ -26,7 +26,7 @@
 
 
 function usage {
-  echo "pageboy-v1.2.3"
+  echo "pageboy-v2.0.1"
   echo "    $target            # runs as pageboy script"
   echo "    $target -r <page>  # runs requested page"
   echo "    $target -p <page>  # prints requested page"
@@ -63,10 +63,15 @@ function record (end) {
   shebang=name
   if (shebang ~ /pageboy/) { shebang="/usr/bin/env bash" }
   count+=1
-  print tag(name)(++tot[tag(name)])" NR>="(start+1)"&&"end">=NR "shebang
+  split(shebang, sheparts, "#")
+  print tag(name)(++tot[tag(name)])" NR>="(start+1)"&&"end">=NR "sheparts[1]
 }
 function tag (name) {
  split(name,words); bin=words[1];
+ if (words[length(words)] ~ /^#/) {
+   split(words[length(words)], comment, "#")
+   return comment[2]
+ }
  if (bin == "/usr/bin/env") { bin=words[2] }
  split(bin,path,"/"); return path[length(path)];
 }
@@ -91,5 +96,5 @@ case "$fn" in
     echo "$program" | PAGEBOY="$target" PAGE="$PAGEBOY -r" $shebang; exit $?
     ;;
 esac
-cat <(grep -v compile "$0") "$1"
+cat <(grep -v compile "$0" | grep -v '^# ') "$1"
 exit 0
