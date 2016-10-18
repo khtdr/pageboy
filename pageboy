@@ -25,8 +25,11 @@
 # 
 
 
+# The usage function gets called when an unknown option is supplie
+# It prints out the usage example, and exits successfully.
+
 function usage {
-  echo "pageboy-v2.0.1"
+  echo "pageboy-v2.0.2"
   echo "    $target            # runs as pageboy script"
   echo "    $target -r <page>  # runs requested page"
   echo "    $target -p <page>  # prints requested page"
@@ -36,6 +39,13 @@ function usage {
   echo "https://github.com/khtdr/pageboy"
   exit 0
 }
+
+# This is where the script gets started. bash wants the
+# usage function to be defined already, so it is up there.
+#
+# I don't remember why this is written this way. Seems
+# pretty specific. TODO, figure out wtf I did.
+
 read -r -a ARGV <<< "$@"
 while (("$OPTIND" <= "$#")); do
   while getopts "dr:p:ch" opt; do
@@ -50,8 +60,20 @@ while (("$OPTIND" <= "$#")); do
   target=${target:-${ARGV[($OPTIND-1)]}}
   OPTIND=$(($OPTIND+1))
 done
+
+# If the target was not explicitly passed in, refer to the name of the script
+
 target=${target:-$0}
-fn=${fn:-run}; page=${page:-pageboy}
+
+# If no command was given, then RUN is the command
+
+fn=${fn:-run}
+
+# If no page is given, pageboy is the page to use
+
+page=${page:-pageboy}
+
+
 if [[ $# = 0 ]] && [[ $0 =~ pageboy(-test)?$ ]]; then fn=usage; fi
 [[ "$fn" != "usage" ]] || { usage; }
 [[ -f "$target" ]] || {
@@ -96,5 +118,9 @@ case "$fn" in
     echo "$program" | PAGEBOY="$target" PAGE="$PAGEBOY -r" $shebang; exit $?
     ;;
 esac
+
+# If the script got this far, it can only mean it was compiling to bash
+# This removes the compile command and all comments
+
 cat <(grep -v compile "$0" | grep -v '^# ') "$1"
 exit 0
