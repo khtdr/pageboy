@@ -23,7 +23,7 @@ You can mix and match all you want. If your script uses valid [shebangs](https:/
 installation & quickstart
 -------------------------
 
-1. Current version: 2.1.2
+1. Current version: 2.1.3
 1. Download the [pageboy bash script](https://raw.githubusercontent.com/khtdr/pageboy/v1.2.3/pageboy) and put into your `$PATH` (ie. `~/bin/`).
 2. Start using `#!/usr/bin/env pageboy` as your shebang line in your bash scripts.
 2. Call other "pages" of your script by using the pre-defined `$PAGE` command in your scripts.
@@ -118,7 +118,7 @@ feature guide
 pageboy -h
 ```
 >```
-pageboy-v2.1.2
+pageboy-v2.1.3
     pageboy            # runs as pageboy script
     pageboy -r <page>  # runs requested page
     pageboy -p <page>  # prints requested page

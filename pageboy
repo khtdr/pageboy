@@ -29,7 +29,7 @@
 # It prints out the usage example, and exits successfully.
 
 function usage {
-  echo "pageboy-v2.1.2"
+  echo "pageboy-v2.1.3"
   echo "    $target            # runs as pageboy script"
   echo "    $target -r <page>  # runs requested page"
   echo "    $target -p <page>  # prints requested page"
@@ -69,9 +69,12 @@ while (("$OPTIND" <= "$#")); do
          ;;
     esac
   done
-  if [ -z "$target" ]; then
-    target=${target:-${ARGV[($OPTIND-1)]}}
-    ARGV[($OPTIND-1)]=""
+  echo $0 | grep 'pageboy' &>/dev/null
+  if [ $? = 0 ]; then
+    if [ -z "$target" ]; then
+      target=${target:-${ARGV[($OPTIND-1)]}}
+      ARGV[($OPTIND-1)]=""
+    fi
   fi
   OPTIND=$(($OPTIND+1))
 done
