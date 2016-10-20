@@ -3,15 +3,15 @@ cd ${0%'test.sh'}
 ln -sf pageboy "pageboy-test"
 ./pageboy-test -h
 export PATH=$PATH:$(pwd)
-for t in ./scripts/test-*.sh; do
+for t in ./tests/*.pb; do
   echo -n "$t ... "
   read -r expected <<< "$(tail -1 $t | sed 's/^#//')"
   read -r actual <<< "$($t)"
   if [[ "$expected" == "$actual" ]]; then
-    echo "$($t -c)" > $t.compiled
-    chmod +x $t.compiled
-    read -r compiled <<< "$($t.compiled)"
-    rm $t.compiled
+    echo "$($t -c)" > $t.sh
+    chmod +x $t.sh
+    read -r compiled <<< "$($t.sh)"
+    rm $t.sh
     if [[ "$actual" == "$compiled" ]]; then
       echo "passed"
     else

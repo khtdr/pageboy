@@ -29,7 +29,7 @@
 # It prints out the usage example, and exits successfully.
 
 function usage {
-  echo "pageboy-v2.0.2"
+  echo "pageboy-v2.1.2"
   echo "    $target            # runs as pageboy script"
   echo "    $target -r <page>  # runs requested page"
   echo "    $target -p <page>  # prints requested page"
@@ -50,14 +50,29 @@ read -r -a ARGV <<< "$@"
 while (("$OPTIND" <= "$#")); do
   while getopts "dr:p:ch" opt; do
     case "$opt" in
-      r) fn=run; page="$OPTARG" ;;
-      p) fn=print; page="$OPTARG" ;;
-      c) fn=compile ;;
-      d) fn=dump; ;;
-      *) fn=usage ;;
+      r) fn=run;
+         page="$OPTARG";
+         ARGV[($OPTIND-2)]="";
+         ARGV[($OPTIND-3)]="";
+         ;;
+      p) fn=print;
+         page="$OPTARG";
+         ARGV[($OPTIND-2)]="";
+         ARGV[($OPTIND-3)]="";
+         ;;
+      c) fn=compile; ARGV[($OPTIND-2)]=""; ;; # must be on one line.
+      d) fn=dump;
+         ARGV[($OPTIND-2)]="";
+         ;;
+      *) fn=usage;
+         ARGV[($OPTIND-2)]="";
+         ;;
     esac
   done
-  target=${target:-${ARGV[($OPTIND-1)]}}
+  if [ -z "$target" ]; then
+    target=${target:-${ARGV[($OPTIND-1)]}}
+    ARGV[($OPTIND-1)]=""
+  fi
   OPTIND=$(($OPTIND+1))
 done
 
@@ -115,7 +130,12 @@ case "$fn" in
   "dump") echo "$table"; exit 0 ;;
   "run")
     if [[ $shebang =~ "env awk" ]]; then awk "$program"; exit $?; fi
-    echo "$program" | PAGEBOY="$target" PAGE="$PAGEBOY -r" $shebang; exit $?
+    if [ -z "$PAGEBOY_ARGS" ]; then
+      export PAGEBOY_ARGS=$(echo ${ARGV[*]:-$PAGEBOY_ARGS} | xargs)
+    fi
+    echo "$program" | \
+      PAGEBOY_ARGS="$PAGEBOY_ARGS" PAGEBOY="$target" PAGE="$PAGEBOY -r" \
+      $shebang; exit $?
     ;;
 esac
 
