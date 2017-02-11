@@ -3,5 +3,5 @@ script:
   - ./run-tests.sh
 sudo: required
 install:
-  - apt-get install php7
-  - apt-get install bc
+  - sudo apt-get install php7
+  - sudo apt-get install bc
