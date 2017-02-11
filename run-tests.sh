@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cd ${0%'test.sh'}
+cd ${0%'run-tests.sh'}
 ln -sf pageboy "pageboy-test"
 ./pageboy-test -h
 export PATH=$PATH:$(pwd)

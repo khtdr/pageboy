@@ -1,7 +1,0 @@
-language: bash
-script:
-  - ./run-tests.sh
-sudo: required
-install:
-  - sudo apt-get install php
-  - sudo apt-get install bc

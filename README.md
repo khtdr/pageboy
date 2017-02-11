@@ -18,6 +18,33 @@ Write your shell scripts in any combination of languages you want.
 
 ```
 
+#### tests
+```bash
+> ./run-tests.sh
+pageboy-v2.1.3
+    ./pageboy-test            # runs as pageboy script
+    ./pageboy-test -r <page>  # runs requested page
+    ./pageboy-test -p <page>  # prints requested page
+    ./pageboy-test -c         # compiles to bash script
+    ./pageboy-test -d         # dumps page table
+    ./pageboy-test -h         # shows this message
+https://github.com/khtdr/pageboy
+./tests/aliased.pb ... passed
+./tests/args.pb ... passed
+./tests/awk.pb ... passed
+./tests/confusing.pb ... passed
+./tests/dump.pb ... passed
+./tests/lots.pb ... passed
+./tests/named.pb ... passed
+./tests/pageboy.pb ... passed
+./tests/paths.pb ... passed
+./tests/plain-bash.pb ... passed
+./tests/print-php.pb ... passed
+./tests/pwd.pb ... passed
+./tests/run-php.pb ... passed
+./tests/version.pb ... passed
+```
+
 You can mix and match all you want. If your script uses valid [shebangs](https://en.wikipedia.org/wiki/Shebang_(Unix)), it will work. If it doesn't, it's a bug and [please let me know](https://github.com/khtdr/pageboy/issues). It also supports the (not quite right) awk shebang: `#!/usr/bin/env awk`.
 
 installation & quickstart
