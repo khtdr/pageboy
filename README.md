@@ -19,6 +19,7 @@ Write your shell scripts in any combination of languages you want.
 ```
 
 #### tests
+[![Build Status](https://travis-ci.org/khtdr/pageboy.svg?branch=master)](https://travis-ci.org/khtdr/pageboy)
 ```bash
 > ./run-tests.sh
 pageboy-v2.1.3
