@@ -182,7 +182,7 @@ pageboy -h
         pageboy -h         # shows this message
     https://github.com/khtdr/pageboy
 
-More examples can be found in the (`scripts` directory)[https://github.com/khtdr/pageboy/blob/master/tests/].
+More examples can be found in the (https://github.com/khtdr/pageboy/blob/master/tests/)[tests directory].
 
 
 advanced features
