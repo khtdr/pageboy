@@ -8,7 +8,7 @@ Write your shell scripts in any combination of scripting languages.
 
 **Example Script** `example.pb`
 
-```pageboy
+```bash
 #!/usr/bin/env pageboy
 echo in Bash
 $PAGE php
