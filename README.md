@@ -104,6 +104,7 @@ env | grep TERM
 <?php
 echo __DIR__;
 ```
+
 >```
 10
 11
@@ -145,6 +146,7 @@ feature guide
 ```bash
 pageboy -h
 ```
+
 >```
 pageboy-v2.1.3
     pageboy            # runs as pageboy script
