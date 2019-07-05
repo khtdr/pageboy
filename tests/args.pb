@@ -6,6 +6,6 @@ $PAGE php
 <?php
 
 $args = getenv("PAGEBOY_ARGS");
-var_dump($args);
+echo serialize($args);
 
-# string(0) ""
+# s:0:"";
