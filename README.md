@@ -19,6 +19,11 @@ installation
 curl -o ~/bin/pageboy https://raw.githubusercontent.com/khtdr/pageboy/master/pageboy; chmod +x ~/bin/pageboy
 ```
 
+Verify the install
+```bash
+~/bin/pageboy -h
+```
+
 **Example Script** `example.pb`
 
 ```bash
