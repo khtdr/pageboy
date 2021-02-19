@@ -1,3 +1,3 @@
 #!/usr/bin/env pageboy-test
-$PAGEBOY -d | wc -l
-# 1
+$PAGEBOY -d | wc -w
+# 4

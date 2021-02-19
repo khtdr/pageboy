@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # 
 # The MIT License (MIT)
@@ -25,11 +25,10 @@
 # 
 
 
-# The usage function gets called when an unknown option is supplie
+# The usage function gets called when an unknown option is supplied.
 # It prints out the usage example, and exits successfully.
-
 function usage {
-  echo "pageboy-v2.1.3"
+  echo "pageboy-v2.1.4"
   echo "    $target            # runs as pageboy script"
   echo "    $target -r <page>  # runs requested page"
   echo "    $target -p <page>  # prints requested page"
@@ -42,61 +41,66 @@ function usage {
 
 # This is where the script gets started. bash wants the
 # usage function to be defined already, so it is up there.
-#
-# I don't remember why this is written this way. Seems
-# pretty specific. TODO, figure out wtf I did.
-
 read -r -a ARGV <<< "$@"
 while (("$OPTIND" <= "$#")); do
   while getopts "dr:p:ch" opt; do
     case "$opt" in
       r) fn=run;
          page="$OPTARG";
-         ARGV[($OPTIND-2)]="";
-         ARGV[($OPTIND-3)]="";
+         ARGV[(OPTIND-2)]="";
+         ARGV[(OPTIND-3)]="";
          ;;
       p) fn=print;
          page="$OPTARG";
-         ARGV[($OPTIND-2)]="";
-         ARGV[($OPTIND-3)]="";
+         ARGV[(OPTIND-2)]="";
+         ARGV[(OPTIND-3)]="";
          ;;
-      c) fn=compile; ARGV[($OPTIND-2)]=""; ;; # must be on one line.
+      c) fn=compile; # comments trigger removal
+         ARGV[(OPTIND-2)]=""; # compile
+         ;; # compile
       d) fn=dump;
-         ARGV[($OPTIND-2)]="";
+         ARGV[(OPTIND-2)]="";
          ;;
       *) fn=usage;
-         ARGV[($OPTIND-2)]="";
+         ARGV[(OPTIND-2)]="";
          ;;
     esac
   done
-  echo $0 | grep 'pageboy' &>/dev/null
-  if [ $? = 0 ]; then
-    if [ -z "$target" ]; then
-      target=${target:-${ARGV[($OPTIND-1)]}}
-      ARGV[($OPTIND-1)]=""
+  if [ -z "$target" ]; then
+    if echo "$0" | grep "pageboy\(-test\)\?\$" &>/dev/null; then
+      # the `read` commmand does not properly respect
+      # the quoted filename with spaces. This splits it _again_
+      # and removes all the parts from the ARGV array
+      target=$1;
+      read -r -a name_parts <<< "$target"
+      parts_length=${#name_parts[@]}
+      for i in $(seq "$parts_length"); do
+        ARGV[(OPTIND-2+i)]=""
+      done
     fi
   fi
-  OPTIND=$(($OPTIND+1))
+  OPTIND=$((OPTIND+1))
 done
 
 # If the target was not explicitly passed in, refer to the name of the script
-
 target=${target:-$0}
 
 # If no command was given, then RUN is the command
-
 fn=${fn:-run}
 
 # If no page is given, pageboy is the page to use
-
 page=${page:-pageboy}
-
 
 if [[ $# = 0 ]] && [[ $0 =~ pageboy(-test)?$ ]]; then fn=usage; fi
 [[ "$fn" != "usage" ]] || { usage; }
 [[ -f "$target" ]] || {
-  echo "no readable file name supplied"; usage;
+  echo "<$target> is not a readable script"; usage;
 }
+
+# This embedded awk script is the heart of the program.
+# It builds a look up table of all the pages which is
+# used to extract substrings from the main script
+# and evaluate them against their shebang.
 read -r -d '' awkScript <<'EOF'
 function record (end) {
   if (count == 0 && name ~ /bash/) { return }
@@ -122,28 +126,35 @@ END { record(NR); }
   name=substr($0, 3); start=NR;
 }
 EOF
-table="$(awk "$awkScript" $target)"
-read -r -a spec <<< $(echo "$table" | grep ^$page | head -1);
-name=${spec[0]}; spec[0]="";
-range=${spec[1]}; spec[1]="";
-shebang="${spec[@]}";
-program=$(awk $range  $target);
+table="$(awk "$awkScript" "$target")"
+read -r -a spec <<< "$(echo "$table" | grep ^"$page" | head -1)"
+range=${spec[1]} # These are the indexes of the page
+spec[0]=""
+spec[1]=""
+shebang="${spec[*]}"
+program=$(awk "$range" "$target")
 case "$fn" in
   "print") echo "$program"; exit 0 ;;
   "dump") echo "$table"; exit 0 ;;
   "run")
     if [[ $shebang =~ "env awk" ]]; then awk "$program"; exit $?; fi
+    # Don't clobber the args for subshells, only use the args
+    # provided by the external original command
     if [ -z "$PAGEBOY_ARGS" ]; then
-      export PAGEBOY_ARGS=$(echo ${ARGV[*]:-$PAGEBOY_ARGS} | xargs)
+      PAGEBOY_ARGS=$(echo ${ARGV[*]:-$PAGEBOY_ARGS} | xargs)
+      # Must be exported to be availble to sub shell proccesses
+      export PAGEBOY_ARGS
     fi
     echo "$program" | \
-      PAGEBOY_ARGS="$PAGEBOY_ARGS" PAGEBOY="$target" PAGE="$PAGEBOY -r" \
-      $shebang; exit $?
+        PAGEBOY_ARGS="$PAGEBOY_ARGS" \
+        PAGEBOY="$target" \
+        PAGE="$target -r" \
+        $shebang
+    exit $?
     ;;
 esac
 
 # If the script got this far, it can only mean it was compiling to bash
 # This removes the compile command and all comments
-
-cat <(grep -v compile "$0" | grep -v '^# ') "$1"
+cat <(grep -v compile "$0" | grep -v '^#') "$1"
 exit 0
