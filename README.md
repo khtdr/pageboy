@@ -6,6 +6,19 @@ pageboy
 
 Write your shell scripts in any combination of scripting languages. 
 
+
+installation
+------------
+
+1. Current version: 2.1.4
+2. Download the [pageboy bash script](https://raw.githubusercontent.com/khtdr/pageboy/v2.1.4/pageboy) and put into your `$PATH` (ie. `~/bin/`).
+3. Start using `#!/usr/bin/env pageboy` as your shebang line in your bash scripts.
+4. Call other "pages" of your script by using the pre-defined `$PAGE` command in your scripts.
+
+```bash
+curl -o ~/bin/pageboy https://raw.githubusercontent.com/khtdr/pageboy/v2.1.4/pageboy; chmod +x ~/bin/pageboy
+```
+
 **Example Script** `example.pb`
 
 ```bash
@@ -57,16 +70,9 @@ _produces the output:_
 
 You can mix and match all you want. If your script uses valid [shebangs](https://en.wikipedia.org/wiki/Shebang_(Unix)), it will work. If it doesn't, it's a bug and [please let me know](https://github.com/khtdr/pageboy/issues). It also supports the (not quite right) awk shebang: `#!/usr/bin/env awk`.
 
-installation & quickstart
--------------------------
 
-1. Current version: 2.1.4
-2. Download the [pageboy bash script](https://raw.githubusercontent.com/khtdr/pageboy/v1.2.3/pageboy) and put into your `$PATH` (ie. `~/bin/`).
-   ```bash
-   curl -o ~/bin/pageboy https://raw.githubusercontent.com/khtdr/pageboy/v1.2.3/pageboy; chmod +x ~/bin/pageboy
-   ```
-3. Start using `#!/usr/bin/env pageboy` as your shebang line in your bash scripts.
-4. Call other "pages" of your script by using the pre-defined `$PAGE` command in your scripts.
+quickstart examples
+-------------------
 
 ```bash
 #!/usr/bin/env pageboy
