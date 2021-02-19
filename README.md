@@ -11,12 +11,12 @@ installation
 ------------
 
 1. Current version: 2.1.4
-2. Download the [pageboy bash script](https://raw.githubusercontent.com/khtdr/pageboy/v2.1.4/pageboy) and put into your `$PATH` (ie. `~/bin/`).
+2. Download the [pageboy bash script](https://raw.githubusercontent.com/khtdr/pageboy/master/pageboy) and put into your `$PATH` (ie. `~/bin/`).
 3. Start using `#!/usr/bin/env pageboy` as your shebang line in your bash scripts.
 4. Call other "pages" of your script by using the pre-defined `$PAGE` command in your scripts.
 
 ```bash
-curl -o ~/bin/pageboy https://raw.githubusercontent.com/khtdr/pageboy/v2.1.4/pageboy; chmod +x ~/bin/pageboy
+curl -o ~/bin/pageboy https://raw.githubusercontent.com/khtdr/pageboy/master/pageboy; chmod +x ~/bin/pageboy
 ```
 
 **Example Script** `example.pb`
